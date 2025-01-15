@@ -29,6 +29,22 @@ class FootballTeamsViewModel: ObservableObject {
         }
     }
     
+    func getPointsSortered() {
+        self.filteredFootballTeams = filteredFootballTeams.sorted(by: { $0.intPoints?.codingKey.intValue ?? 0 > $1.intPoints?.codingKey.intValue ?? 0})
+    }
+    
+    func getWinsSortered() {
+        self.filteredFootballTeams = filteredFootballTeams.sorted(by: { $0.intWin?.codingKey.intValue ?? 0 > $1.intWin?.codingKey.intValue ?? 0})
+    }
+    
+    func getDrawSortered() {
+        self.filteredFootballTeams = filteredFootballTeams.sorted(by: { $0.intDraw?.codingKey.intValue ?? 0 > $1.intDraw?.codingKey.intValue ?? 0})
+    }
+    
+    func getLossSortered() {
+        self.filteredFootballTeams = filteredFootballTeams.sorted(by: { $0.intLoss?.codingKey.intValue ?? 0 > $1.intLoss?.codingKey.intValue ?? 0})
+    }
+    
     func getFilteredFootballTeams(query: String) {
         if query.isEmpty {
             self.filteredFootballTeams = footballTeams

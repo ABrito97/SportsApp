@@ -111,7 +111,6 @@ struct FootballDetailView: View {
                }
            })
            .edgesIgnoringSafeArea(.top)
-           .tint(.white)
        }
 }
 

@@ -10,6 +10,7 @@ import SwiftUI
 struct FootballList: View {
     @State var searchText: String = ""
     @StateObject private var viewModel : FootballTeamsViewModel = FootballTeamsViewModel()
+    @Binding var sortOrder: SortOrder
     
     var body: some View {
         VStack {
@@ -20,13 +21,14 @@ struct FootballList: View {
                         Text("TEAM")
                             .offset(x: 40)
                     }
+                    Spacer(minLength: 40)
                     HStack {
                         Text("P")
-                        Text("W")
-                        Text("D")
-                        Text("L")
+                        Text(" W")
+                        Text(" D")
+                        Text(" L")
                     }
-                    .offset(x: 185)
+                    .padding(.horizontal, 20)
                 }
                 ForEach(viewModel.filteredFootballTeams) { element in
                     CellSoccerListView(footballTeams: element)
@@ -34,15 +36,23 @@ struct FootballList: View {
             }
             .navigationTitle("Teams")
             .searchable(text: $searchText, prompt: "Search team")
-            .onChange(of: searchText, perform: {  query in
-                viewModel.getFilteredFootballTeams(query: query)
-            })
+            .onChange(of: searchText) {
+                viewModel.getFilteredFootballTeams(query: searchText)
+            }
             .scrollContentBackground(.hidden)
             .listStyle(.plain)
         }
+        .onChange(of: sortOrder) {
+            switch sortOrder {
+            case .points:
+                viewModel.getPointsSortered()
+            case .win:
+                viewModel.getWinsSortered()
+            case .draw:
+                viewModel.getDrawSortered()
+            case .loss:
+                viewModel.getLossSortered()
+            }
+        }
     }
-}
-
-#Preview {
-    FootballList()
 }
