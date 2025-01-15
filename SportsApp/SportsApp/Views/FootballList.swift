@@ -9,7 +9,8 @@ import SwiftUI
 
 struct FootballList: View {
     @State var searchText: String = ""
-    @StateObject private var viewModel : SoccerTeamsViewModel = SoccerTeamsViewModel()
+    @StateObject private var viewModel : FootballTeamsViewModel = FootballTeamsViewModel()
+    
     var body: some View {
         VStack {
             List {
@@ -25,14 +26,17 @@ struct FootballList: View {
                         Text("D")
                         Text("L")
                     }
-                    .offset(x: 210)
+                    .offset(x: 185)
                 }
-                ForEach(viewModel.soccerTeams) { element in
-                    CellSoccerListView(soccerTeams: element)
+                ForEach(viewModel.filteredFootballTeams) { element in
+                    CellSoccerListView(footballTeams: element)
                 }
             }
             .navigationTitle("Teams")
-            .searchable(text: $searchText, prompt: "Buscar")
+            .searchable(text: $searchText, prompt: "Search team")
+            .onChange(of: searchText, perform: {  query in
+                viewModel.getFilteredFootballTeams(query: query)
+            })
             .scrollContentBackground(.hidden)
             .listStyle(.plain)
         }
